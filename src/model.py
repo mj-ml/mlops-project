@@ -5,6 +5,11 @@ from sklearn.model_selection import train_test_split
 
 
 def generate_features(df: pd.DataFrame) -> pd.DataFrame:
+    """
+
+    :param df:
+    :return:
+    """
     df.dropna(inplace=True)
     df["time"] = pd.to_datetime(df["time"], utc=True)
     df["temp"] = df["temp"] - 273.15
@@ -14,6 +19,11 @@ def generate_features(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def split_train_test(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """
+
+    :param df:
+    :return:
+    """
     train_df, test_df = train_test_split(
         df,
         test_size=0.1,
