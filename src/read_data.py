@@ -6,7 +6,7 @@ def read_load() -> pd.DataFrame:
 
     :return:
     """
-    df = pd.read_csv("../data/energy_dataset.csv.zip", compression="zip")
+    df = pd.read_csv("data/energy_dataset.csv.zip", compression="zip")
     return df
 
 
@@ -15,7 +15,7 @@ def read_weather() -> pd.DataFrame:
 
     :return:
     """
-    df = pd.read_csv("../data/weather_features.csv.zip", compression="zip")
+    df = pd.read_csv("data/weather_features.csv.zip", compression="zip")
     return df
 
 

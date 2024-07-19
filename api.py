@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 
-from src.model import fetch_model_predict
+from src.model import fetch_model_predict, register_the_best_model
+from src.pipeline import training_pipeline
 
 app = Flask("load-prediction")
 
@@ -18,7 +19,7 @@ def predict_endpoint():
 @app.route("/alive", methods=["POST"])
 def alive():
     print("alive")
-
+    return jsonify({"status": "ok"})
 
 @app.route("/retrain", methods=["POST"])
 def retrain():
@@ -28,6 +29,9 @@ def retrain():
 @app.route("/train", methods=["POST"])
 def train():
     print("train")
+    training_pipeline()
+    register_the_best_model(top_n=2)
+    return jsonify({"status": "ok"})
 
 
 if __name__ == "__main__":
