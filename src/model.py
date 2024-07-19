@@ -12,6 +12,10 @@ import mlflow
 from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 from hyperopt.pyll import scope
 
+THE_BEST_MODEL_VERSION = "thebest"
+
+RF_BEST_MODEL = "rf-best-model"
+
 EXPERIMENT_NAME = "energy-prediction"
 
 # mlflow.set_tracking_uri("http://mlflow:5000")
@@ -100,4 +104,37 @@ def register_the_best_model(top_n=2):
     )[0]
     run_id = best_run.info.run_id
     model_uri = f"runs:/{run_id}/model"
-    mlflow.register_model(model_uri, name="rf-best-model")
+    mlflow.register_model(
+        model_uri,
+        name=RF_BEST_MODEL,
+    )
+
+    version = client.get_latest_versions(RF_BEST_MODEL)[0].version
+    client.set_registered_model_alias(
+        RF_BEST_MODEL,
+        alias=THE_BEST_MODEL_VERSION,
+        version=version,
+    )
+
+
+def fetch_model_predict(temp, hour, day):
+    model_name = RF_BEST_MODEL
+    alias = THE_BEST_MODEL_VERSION
+    model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}@{alias}")
+    print(model)
+    df = pd.DataFrame(
+        [
+            [
+                temp,
+                hour,
+                day,
+            ]
+        ],
+        columns=["temp", "hour", "day"],
+    )
+
+    df["temp"] = df["temp"].astype(float)
+    df["hour"] = df["hour"].astype("int32")
+    df["day"] = df["day"].astype("int32")
+    result = model.predict(df)
+    return result

@@ -1,4 +1,10 @@
-from src.model import generate_features, split_train_test, train_model, register_the_best_model
+from src.model import (
+    generate_features,
+    split_train_test,
+    train_model,
+    register_the_best_model,
+    fetch_model_predict,
+)
 from src.read_data import (
     read_weather,
     extract_weather,
@@ -22,3 +28,5 @@ def training_pipeline():
 if __name__ == "__main__":
     training_pipeline()
     register_the_best_model(top_n=2)
+    test_result = fetch_model_predict(20, 10, 10, )
+    print(test_result)
