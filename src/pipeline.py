@@ -7,7 +7,8 @@ from src.read_data import (
     create_dataframe,
 )
 
-if __name__ == "__main__":
+
+def training_pipeline():
     df = read_weather()
     df_weather = extract_weather(df)
     df = read_load()
@@ -15,3 +16,8 @@ if __name__ == "__main__":
     df_all = create_dataframe(df_weather, df_load)
     df_features = generate_features(df_all)
     df_train, df_test = split_train_test(df_features)
+    train_model(df_train, df_test)
+
+
+if __name__ == "__main__":
+    training_pipeline()
