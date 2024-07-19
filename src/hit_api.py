@@ -2,8 +2,8 @@ import requests
 
 params = {
     "temp": 0,
-    "hour": 10,
-    "day": 40
+    "hour": 1,
+    "day": 150
 }
 
 url = 'http://localhost:9696/predict'
