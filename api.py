@@ -1,11 +1,6 @@
-import os
-import pickle
-
-import mlflow
 from flask import Flask, request, jsonify
 
 from src.model import fetch_model_predict
-
 
 app = Flask("load-prediction")
 

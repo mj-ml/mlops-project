@@ -49,6 +49,14 @@ services:
       - "${PWD}/mlflow:/home/mlflow/"
     networks:
       - app-network
+  api:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    ports:
+      - "9696:9696"
+    networks:
+      - app-network
 networks:
   app-network:
     driver: bridge

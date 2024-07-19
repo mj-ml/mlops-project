@@ -18,8 +18,8 @@ RF_BEST_MODEL = "rf-best-model"
 
 EXPERIMENT_NAME = "energy-prediction"
 
-# mlflow.set_tracking_uri("http://mlflow:5000")
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_tracking_uri("http://mlflow:5000")
+# mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment(EXPERIMENT_NAME)
 mlflow.sklearn.autolog(
     log_models=True,
