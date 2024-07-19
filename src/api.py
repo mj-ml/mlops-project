@@ -4,57 +4,36 @@ import pickle
 import mlflow
 from flask import Flask, request, jsonify
 
-RUN_ID = os.getenv('RUN_ID')
-
-logged_model = f's3://mlflow-models-alexey/1/{RUN_ID}/artifacts/model'
-# logged_model = f'runs:/{RUN_ID}/model'
-model = mlflow.pyfunc.load_model(logged_model)
+from src.model import fetch_model_predict
 
 
-def prepare_features(ride):
-    features = {}
-    features['PU_DO'] = '%s_%s' % (ride['PULocationID'], ride['DOLocationID'])
-    features['trip_distance'] = ride['trip_distance']
-    return features
+app = Flask("load-prediction")
 
 
-def predict(features):
-    preds = model.predict(features)
-    return float(preds[0])
+@app.route("/predict", methods=["POST"])
+def predict_endpoint():
+    ride = request.get_json()
+    pred = fetch_model_predict(
+        **ride,
+    )[0]
+    result = {"load": pred}
+    return jsonify(result)
 
 
-app = Flask('load-prediction')
-
-
-# @app.route('/predict', methods=['POST'])
-# def predict_endpoint():
-#     ride = request.get_json()
-#
-#     features = prepare_features(ride)
-#     pred = predict(features)
-#
-#     result = {
-#         'duration': pred,
-#         'model_version': RUN_ID
-#     }
-#
-#     return jsonify(result)
-
-
-@app.route('/alive', methods=['POST'])
+@app.route("/alive", methods=["POST"])
 def alive():
-    print('alive')
+    print("alive")
 
 
-@app.route('/retrain', methods=['POST'])
+@app.route("/retrain", methods=["POST"])
 def retrain():
-    print('retrain')
+    print("retrain")
 
 
-@app.route('/retrain', methods=['POST'])
+@app.route("/train", methods=["POST"])
 def train():
-    print('train')
+    print("train")
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=9696)
+    app.run(debug=True, host="0.0.0.0", port=9696)
