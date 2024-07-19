@@ -2,6 +2,8 @@ from typing import Tuple
 
 import numpy as np
 import pandas as pd
+from mlflow import MlflowClient
+from mlflow.entities import ViewType
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 from sklearn.model_selection import train_test_split
@@ -10,10 +12,11 @@ import mlflow
 from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 from hyperopt.pyll import scope
 
+EXPERIMENT_NAME = "energy-prediction"
 
 # mlflow.set_tracking_uri("http://mlflow:5000")
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
-mlflow.set_experiment("energy-prediction")
+mlflow.set_experiment(EXPERIMENT_NAME)
 mlflow.sklearn.autolog(
     log_models=True,
     log_datasets=False,
@@ -84,3 +87,17 @@ def train_model(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
         trials=Trials(),
         rstate=rstate,
     )
+
+
+def register_the_best_model(top_n=2):
+    client = MlflowClient()
+    experiment = client.get_experiment_by_name(EXPERIMENT_NAME)
+    best_run = client.search_runs(
+        experiment_ids=experiment.experiment_id,
+        run_view_type=ViewType.ACTIVE_ONLY,
+        max_results=top_n,
+        order_by=["metrics.mape ASC"],
+    )[0]
+    run_id = best_run.info.run_id
+    model_uri = f"runs:/{run_id}/model"
+    mlflow.register_model(model_uri, name="rf-best-model")
