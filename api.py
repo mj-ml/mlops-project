@@ -24,6 +24,8 @@ def alive():
 @app.route("/retrain", methods=["POST"])
 def retrain():
     print("retrain")
+    return jsonify({"status": "ok"})
+
 
 
 @app.route("/train", methods=["POST"])
