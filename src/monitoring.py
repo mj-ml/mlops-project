@@ -37,7 +37,7 @@ def fetch_model_monitoring(df_monitoring):
     return mape
 
 
-if __name__ == "__main__":
+def monitoring():
     df = read_weather()
     df_weather = extract_weather(df)
     df = read_load()
@@ -51,3 +51,6 @@ if __name__ == "__main__":
         training_pipeline()
     else:
         print("no models need to be trained")
+
+if __name__ == "__main__":
+    monitoring()
