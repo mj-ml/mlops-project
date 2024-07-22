@@ -1,20 +1,22 @@
-from src.model import (
-    generate_features,
-    split_train_test,
-    train_model,
-    register_the_best_model,
-    fetch_model_predict,
-)
-from src.read_data import (
-    read_weather,
-    extract_weather,
-    read_load,
-    extract_load,
-    create_dataframe,
-)
+from src.model import register_the_best_model, fetch_model_predict
 
 
 def training_pipeline():
+    from src.model import (
+        generate_features,
+        split_train_test,
+        train_model,
+        register_the_best_model,
+        fetch_model_predict,
+    )
+    from src.read_data import (
+        read_weather,
+        extract_weather,
+        read_load,
+        extract_load,
+        create_dataframe,
+    )
+
     df = read_weather()
     df_weather = extract_weather(df)
     df = read_load()

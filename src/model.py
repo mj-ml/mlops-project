@@ -12,20 +12,16 @@ import mlflow
 from hyperopt import STATUS_OK, Trials, fmin, hp, tpe
 from hyperopt.pyll import scope
 
-THE_BEST_MODEL_VERSION = "thebest"
+from settings import MLFLOW_URL, EXPERIMENT_NAME, RF_BEST_MODEL, THE_BEST_MODEL_VERSION
 
-RF_BEST_MODEL = "rf-best-model"
-
-EXPERIMENT_NAME = "energy-prediction"
-
-mlflow.set_tracking_uri("http://mlflow:5000")
-# mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_tracking_uri(MLFLOW_URL)
 mlflow.set_experiment(EXPERIMENT_NAME)
 mlflow.sklearn.autolog(
     log_models=True,
     log_datasets=False,
 )
-
+target_variable = "total load actual"
+time_variable_to_drop = "time"
 
 def generate_features(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -61,8 +57,7 @@ def train_model(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
         "max_depth": scope.int(hp.quniform("max_depth", 1, 10, 2)),
         "random_state": 42,
     }
-    target_variable = "total load actual"
-    time_variable_to_drop = "time"
+
 
     X_train = train_df.drop(columns=[target_variable, time_variable_to_drop])
     y_train = train_df[target_variable]
