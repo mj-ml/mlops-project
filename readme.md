@@ -95,11 +95,13 @@ if response.status_code == 200:
 Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
 are specified. :D
 
+Linter and sonarcloud applied directly in PyCharm. 
+
 ## Best practices
 
 In the repo you can find
 
 * [ ] There are unit tests
 * [ ] There is an integration test
-* [ ] Linter and/or code formatter are used (1 point)
+* [ ] Linter and/or code formatter are used i
 * [ ] There's a CI/CD pipeline (2 points)
