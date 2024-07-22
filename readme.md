@@ -1,63 +1,81 @@
 # Prediction of energy consumption in Spain
 
-# GOAL 
+## Problem description
+The goal of this project is to predict the energy consumption in Spain.
 
-Predict energy consumption in Spain. 
+The project was based on the following dataset.
 
-# DATASET 
-https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather/discussion
+https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather
+
+The project runs in docker compose, which contains mlflow server and API orchestrating everything. 
+The predictions are returned using webserver (flask). 
+
+# Technical guide
+
+## Cloud
+
+The project is deployed using docker compose. All required components are already included.
+
+In order to start the project run the following line:
+
+```docker compose up```
+
+Later run the file to initialise the models.
+```python3 src/hit_api.py```
+
+the only required library is requests - please make sure you have it installed! :)
+
+```python
+    """
+    Example pipeline
+    """
+params = {"temp": 0, "hour": 1, "day": 150}
+
+url = "http://localhost:9696/alive"
+response = requests.post(url)
+if response.status_code == 200:
+    print("run test alive: all good")
+
+url = 'http://localhost:9696/train'
+response = requests.post(url)
+if response.status_code == 200:
+    print("train the models: all good")
+
+url = "http://localhost:9696/predict"
+response = requests.post(url, json=params)
+if response.status_code == 200:
+    resp = response.json()
+    print(f"the predicted load is {resp['load']}")
+```
+
+## Experiment tracking and model registry
+
+Running hit_api.py will:
+
+- check if the deployment is ok
+- will create an experiment and it will try a couple of ML models
+- the best model according to our metrics (MAPE) will be stored in the registry and used in the process
 
 
+## Workflow orchestration
 
-* Problem description
-    * 0 points: The problem is not described
-    * 1 point: The problem is described but shortly or not clearly 
-    * 2 points: The problem is well described and it's clear what the problem the project solves
+The workflow is orchestrated in the API directly - there is nothing to be done manually
 
+## Model deployment
+The model is deployed as a webservice. (flask)
+The API will call MLFlow, it will extract the best possible model, and it will run against the provided data.
 
+## Model monitoring
+There is model monitoring and if the MAPE is too low, the API will re-run the model training.   
 
-
-
-* Cloud
-    * 0 points: Cloud is not used, things run only locally
-    * 2 points: The project is developed on the cloud OR uses localstack (or similar tool) OR the project is deployed to Kubernetes or similar container management platforms
-    * 4 points: The project is developed on the cloud and IaC tools are used for provisioning the infrastructure
-
-
-Experiment tracking and model registry
-    * 0 points: No experiment tracking or model registry
-    * 2 points: Experiments are tracked or models are registered in the registry
-    * 4 points: Both experiment tracking and model registry are used
+##  Reproducibility
+Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
+      are specified. :D 
 
 
-* Workflow orchestration
-    * 0 points: No workflow orchestration
-    * 2 points: Basic workflow orchestration
-    * 4 points: Fully deployed workflow 
-
-
-* Model deployment
-    * 0 points: Model is not deployed
-    * 2 points: Model is deployed but only locally
-    * 4 points: The model deployment code is containerized and could be deployed to cloud or special tools for model deployment are used
-
-
-* Model monitoring
-    * 0 points: No model monitoring
-    * 2 points: Basic model monitoring that calculates and reports metrics
-    * 4 points: Comprehensive model monitoring that sends alerts or runs a conditional workflow (e.g. retraining, generating debugging dashboard, switching to a different model) if the defined metrics threshold is violated
-
-
-* Reproducibility
-    * 0 points: No instructions on how to run the code at all, the data is missing
-    * 2 points: Some instructions are there, but they are not complete OR instructions are clear and complete, the code works, but the data is missing
-    * 4 points: Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies are specified.
-
-
-* Best practices
-    * [ ] There are unit tests (1 point)
-    * [ ] There is an integration test (1 point)
-    * [ ] Linter and/or code formatter are used (1 point)
-    * [ ] There's a Makefile (1 point)
-    * [ ] There are pre-commit hooks (1 point)
-    * [ ] There's a CI/CD pipeline (2 points)
+## Best practices
+In the repo you can find
+* [ ] There are unit tests
+* [ ] There is an integration test
+* [ ] Linter and/or code formatter are used (1 point)
+* [ ] There's a CI/CD pipeline (2 points)
