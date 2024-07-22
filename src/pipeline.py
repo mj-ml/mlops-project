@@ -37,6 +37,7 @@ def monitoring_pipeline():
         extract_load,
         create_dataframe,
     )
+
     df = read_weather()
     df_weather = extract_weather(df)
     df = read_load()
@@ -55,5 +56,9 @@ def monitoring_pipeline():
 if __name__ == "__main__":
     training_pipeline()
     register_the_best_model(top_n=2)
-    test_result = fetch_model_predict(20, 10, 10, )
+    test_result = fetch_model_predict(
+        20,
+        10,
+        10,
+    )
     print(test_result)

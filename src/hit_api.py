@@ -11,7 +11,7 @@ if __name__ == "__main__":
     if response.status_code == 200:
         print("run test alive: all good")
 
-    url = 'http://localhost:9696/train'
+    url = "http://localhost:9696/train"
     response = requests.post(url)
     if response.status_code == 200:
         print("train the models: all good")
@@ -22,8 +22,7 @@ if __name__ == "__main__":
         resp = response.json()
         print(f"the predicted load is {resp['load']}")
 
-
-    url = 'http://localhost:9696/monitoring'
+    url = "http://localhost:9696/monitoring"
     response = requests.post(url)
     if response.status_code == 200:
         print("train the models: all good")

@@ -23,6 +23,7 @@ mlflow.sklearn.autolog(
 target_variable = "total load actual"
 time_variable_to_drop = "time"
 
+
 def generate_features(df: pd.DataFrame) -> pd.DataFrame:
     """
 
@@ -57,7 +58,6 @@ def train_model(train_df: pd.DataFrame, test_df: pd.DataFrame) -> None:
         "max_depth": scope.int(hp.quniform("max_depth", 1, 10, 2)),
         "random_state": 42,
     }
-
 
     X_train = train_df.drop(columns=[target_variable, time_variable_to_drop])
     y_train = train_df[target_variable]

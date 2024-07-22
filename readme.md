@@ -1,21 +1,24 @@
 # Prediction of energy consumption in Spain
 
 ## Problem description
+
 The goal of this project is to predict the energy consumption in Spain.
 
 The project was based on the following dataset.
 
 https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather
 
-The project runs in docker compose, which contains mlflow server and API orchestrating everything. 
-The predictions are returned using webserver (flask). 
+The project runs in docker compose, which contains mlflow server and API orchestrating everything.
+The predictions are returned using webserver (flask).
 
 ## ML details
+
 The algorithm uses random forest taking into account the following features
-- mean temperature in Spain on a given hour (-30 .. 30 C) 
+
+- mean temperature in Spain on a given hour (-30 .. 30 C)
 - day of year (1st of Jan = 1) (1..365)
 - hour of day (1..24)
-it will produce an estimate of total country level load in MWh. 
+  it will produce an estimate of total country level load in MWh.
 
 # Technical guide
 
@@ -65,34 +68,37 @@ Running hit_api.py will:
 - will create an experiment and it will try a couple of ML models
 - the best model according to our metrics (MAPE) will be stored in the registry and used in the process
 
-
 ## Workflow orchestration
 
 The workflow is orchestrated in the API directly - there is nothing to be done manually
 
 ## Model deployment
+
 The model is deployed as a webservice. (flask)
 The API will call MLFlow, it will extract the best possible model, and it will run against the provided data.
 
 ## Model monitoring
-There is model monitoring and if the MAPE is too low, the API will re-run the model training.   
 
+There is model monitoring and if the MAPE is too low, the API will re-run the model training.
 
 ```python
 import requests
+
 url = 'http://localhost:9696/monitoring'
 response = requests.post(url)
 if response.status_code == 200:
-  print("train the models: all good")
+    print("train the models: all good")
 ```
 
-##  Reproducibility
-Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
-      are specified. :D 
+## Reproducibility
 
+Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
+are specified. :D
 
 ## Best practices
+
 In the repo you can find
+
 * [ ] There are unit tests
 * [ ] There is an integration test
 * [ ] Linter and/or code formatter are used (1 point)
