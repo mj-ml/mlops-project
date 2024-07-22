@@ -10,6 +10,13 @@ https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-pric
 The project runs in docker compose, which contains mlflow server and API orchestrating everything. 
 The predictions are returned using webserver (flask). 
 
+## ML details
+The algorithm uses random forest taking into account the following features
+- mean temperature in Spain on a given hour (-30 .. 30 C) 
+- day of year (1st of Jan = 1) (1..365)
+- hour of day (1..24)
+it will produce an estimate of total country level load in MWh. 
+
 # Technical guide
 
 ## Cloud
