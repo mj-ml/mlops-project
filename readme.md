@@ -103,5 +103,5 @@ In the repo you can find
 
 * [ ] There are unit tests
 * [ ] There is an integration test
-* [ ] Linter and/or code formatter are used i
+* [ ] Linter and/or code formatter are used
 * [ ] There's a CI/CD pipeline (2 points)
