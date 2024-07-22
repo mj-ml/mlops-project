@@ -79,7 +79,7 @@ The API will call MLFlow, it will extract the best possible model, and it will r
 
 ## Model monitoring
 
-There is model monitoring and if the MAPE is too low, the API will re-run the model training.
+There is model monitoring and if the MAPE is too high, the API will re-run the model training.
 
 ```python
 import requests
