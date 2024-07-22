@@ -77,6 +77,15 @@ The API will call MLFlow, it will extract the best possible model, and it will r
 ## Model monitoring
 There is model monitoring and if the MAPE is too low, the API will re-run the model training.   
 
+
+```python
+import requests
+url = 'http://localhost:9696/monitoring'
+response = requests.post(url)
+if response.status_code == 200:
+  print("train the models: all good")
+```
+
 ##  Reproducibility
 Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
       are specified. :D 

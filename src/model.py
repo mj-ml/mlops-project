@@ -133,3 +133,15 @@ def fetch_model_predict(temp, hour, day):
     df["day"] = df["day"].astype("int32")
     result = model.predict(df)
     return result
+
+
+def monitoring(df_monitoring):
+    model_name = RF_BEST_MODEL
+    alias = THE_BEST_MODEL_VERSION
+    model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}@{alias}")
+    X_val = df_monitoring.drop(columns=[target_variable, time_variable_to_drop])
+    y_val = df_monitoring[target_variable]
+
+    y_pred = model.predict(X_val)
+    mape = mean_absolute_percentage_error(y_val, y_pred)
+    return mape

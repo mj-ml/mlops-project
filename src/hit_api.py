@@ -21,3 +21,9 @@ if __name__ == "__main__":
     if response.status_code == 200:
         resp = response.json()
         print(f"the predicted load is {resp['load']}")
+
+
+    url = 'http://localhost:9696/monitoring'
+    response = requests.post(url)
+    if response.status_code == 200:
+        print("train the models: all good")
