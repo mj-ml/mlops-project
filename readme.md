@@ -33,9 +33,11 @@ Later run the file to initialise the models.
 the only required library is requests - please make sure you have it installed! :)
 
 ```python
-    """
-    Example pipeline
-    """
+import requests
+
+"""
+Example pipeline
+"""
 params = {"temp": 0, "hour": 1, "day": 150}
 
 url = "http://localhost:9696/alive"
