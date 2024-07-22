@@ -8,10 +8,15 @@ if __name__ == "__main__":
 
     url = "http://localhost:9696/alive"
     response = requests.post(url)
+    if response.status_code == 200:
+        print("run test alive: all good")
 
     url = 'http://localhost:9696/train'
     response = requests.post(url)
+    if response.status_code == 200:
+        print("train the models: all good")
 
     url = 'http://localhost:9696/predict'
     response = requests.post(url, json=params)
-    print(response.json())
+    resp = response.json()
+    print(f"the predicted load is {resp['load']}")
