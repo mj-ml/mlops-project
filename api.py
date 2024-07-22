@@ -8,9 +8,9 @@ app = Flask("load-prediction")
 
 @app.route("/predict", methods=["POST"])
 def predict_endpoint():
-    ride = request.get_json()
+    params = request.get_json()
     pred = fetch_model_predict(
-        **ride,
+        **params,
     )[0]
     result = {"load": pred}
     return jsonify(result)
