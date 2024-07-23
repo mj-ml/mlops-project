@@ -4,5 +4,6 @@ WORKDIR /app
 COPY . /app
 
 RUN pip --no-cache-dir install -r requirements.txt
+RUN pip install -U prefect
 EXPOSE 9696
 CMD ["python3", "api.py"]
