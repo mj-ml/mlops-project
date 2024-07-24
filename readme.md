@@ -8,7 +8,9 @@ The project was based on the following dataset.
 
 https://www.kaggle.com/datasets/nicholasjhana/energy-consumption-generation-prices-and-weather
 
-The project runs in docker compose, which contains mlflow server and API orchestrating everything.
+The project runs in docker compose, which contains mlflow server for experiment tracking and model registry and API
+orchestrating everything (prefect).
+The monitoring endpoint is able to calculate the metrics and retrain the models if required.
 The predictions are returned using webserver (flask).
 
 ## ML details
@@ -28,12 +30,25 @@ The project is deployed using docker compose. All required components are alread
 
 In order to start the project run the following line:
 
-```docker compose up```
+```docker compose build```
 
-Later run the file to initialise the models.
+and later
+
+```docker compose up -d```
+
+In the file
+
 ```python3 src/hit_api.py```
 
-the only required library is requests - please make sure you have it installed! :)
+you will find all possible actions using the model
+
+* check if the deployment is alive
+* train the models
+* predict.
+
+For the first time please run the file as it is - so that the model can be initialised.
+
+The only required library in your local machine is `requests` - please make sure you have it installed! :)
 
 ```python
 import requests
@@ -70,8 +85,7 @@ Running hit_api.py will:
 
 ## Workflow orchestration
 
-The workflow is orchestrated in the API directly using Prefect. There is nothing to be done manually. 
-
+The workflow is orchestrated in the API directly using Prefect. There is nothing to be done manually.
 
 ## Model deployment
 
@@ -80,7 +94,8 @@ The API will call MLFlow, it will extract the best possible model, and it will r
 
 ## Model monitoring
 
-There is model monitoring and if the MAPE is too high, the API will re-run the model training.
+There is model monitoring and if the MAPE (mean absolute percentage error, the most common metric is time series
+forecasting) is too high, the API will re-run the model training.
 
 ```python
 import requests
@@ -96,7 +111,7 @@ if response.status_code == 200:
 Instructions are clear, it's easy to run the code, and it works. The versions for all the dependencies
 are specified. :D
 
-Linter and sonarcloud applied directly in PyCharm. 
+Linter and sonarcloud applied directly in PyCharm.
 
 ## Best practices
 
