@@ -1,7 +1,8 @@
 from src.model import register_the_best_model, fetch_model_predict, monitoring
+from prefect import flow, task
 
-
-def preprocessing():
+@task
+def data_preprocessing():
     from src.model import (
         generate_features,
         split_train_test,
@@ -22,17 +23,17 @@ def preprocessing():
     df_train, df_test = split_train_test(df_features)
     return df_train, df_test
 
-
+@flow()
 def training_pipeline():
     from src.model import (
         train_model,
     )
-    df_train, df_test = preprocessing()
+    df_train, df_test = data_preprocessing()
     train_model(df_train, df_test)
 
-
+@flow()
 def monitoring_pipeline():
-    _, df_test = preprocessing()
+    _, df_test = data_preprocessing()
     mape = monitoring(df_test)
     if mape > 0.1:
         print("updating models required - rerun the pipeline")

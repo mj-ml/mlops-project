@@ -70,7 +70,8 @@ Running hit_api.py will:
 
 ## Workflow orchestration
 
-The workflow is orchestrated in the API directly - there is nothing to be done manually
+The workflow is orchestrated in the API directly using Prefect. There is nothing to be done manually. 
+
 
 ## Model deployment
 
